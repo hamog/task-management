@@ -10,23 +10,24 @@ use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class OrganizationsController extends Controller
+class TaskController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render('Organizations/Index', [
+        return Inertia::render('Task/Index', [
             'filters' => Request::all('search', 'trashed'),
-            'organizations' => Auth::user()->account->organizations()
-                ->orderBy('name')
+            'tasks' => Auth::user()->tasks()
+                ->orderBy('id', 'desc')
                 ->filter(Request::only('search', 'trashed'))
                 ->paginate(10)
                 ->withQueryString()
-                ->through(fn ($organization) => [
-                    'id' => $organization->id,
-                    'name' => $organization->name,
-                    'phone' => $organization->phone,
-                    'city' => $organization->city,
-                    'deleted_at' => $organization->deleted_at,
+                ->through(fn ($task) => [
+                    'id' => $task->id,
+                    'title' => $task->title,
+                    'status' => $task->status,
+                    'started_at' => $task->started_at->format('Y-m-d H:i:s'),
+                    'finished_at' => $task->finished_at->format('Y-m-d H:i:s'),
+                    'created_at' => $task->created_at->format('Y-m-d H:i:s'),
                 ]),
         ]);
     }
