@@ -15,10 +15,10 @@ class TaskController extends Controller
     public function index(): Response
     {
         return Inertia::render('Task/Index', [
-            'filters' => Request::all('search', 'trashed'),
+            'filters' => Request::all('search'),
             'tasks' => Auth::user()->tasks()
                 ->orderBy('id', 'desc')
-                ->filter(Request::only('search', 'trashed'))
+                ->filter(Request::only('search'))
                 ->paginate(10)
                 ->withQueryString()
                 ->through(fn ($task) => [
