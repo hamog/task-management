@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Task\StoreRequest;
 use App\Models\Organization;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -25,8 +26,8 @@ class TaskController extends Controller
                     'id' => $task->id,
                     'title' => $task->title,
                     'status' => $task->status,
-                    'started_at' => $task->started_at->format('Y-m-d H:i:s'),
-                    'finished_at' => $task->finished_at->format('Y-m-d H:i:s'),
+                    'started_at' => $task->started_at ? $task->started_at->format('Y-m-d H:i:s') : '-',
+                    'finished_at' => $task->finished_at ? $task->finished_at->format('Y-m-d H:i:s') : '-',
                     'created_at' => $task->created_at->format('Y-m-d H:i:s'),
                 ]),
         ]);
@@ -34,25 +35,14 @@ class TaskController extends Controller
 
     public function create(): Response
     {
-        return Inertia::render('Organizations/Create');
+        return Inertia::render('Task/Create');
     }
 
-    public function store(): RedirectResponse
+    public function store(StoreRequest $request): RedirectResponse
     {
-        Auth::user()->account->organizations()->create(
-            Request::validate([
-                'name' => ['required', 'max:100'],
-                'email' => ['nullable', 'max:50', 'email'],
-                'phone' => ['nullable', 'max:50'],
-                'address' => ['nullable', 'max:150'],
-                'city' => ['nullable', 'max:50'],
-                'region' => ['nullable', 'max:50'],
-                'country' => ['nullable', 'max:2'],
-                'postal_code' => ['nullable', 'max:25'],
-            ])
-        );
+        Auth::user()->tasks()->create($request->validated());
 
-        return Redirect::route('organizations')->with('success', 'Organization created.');
+        return Redirect::route('tasks.index')->with('success', 'Task created.');
     }
 
     public function edit(Organization $organization): Response

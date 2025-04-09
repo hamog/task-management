@@ -10,7 +10,7 @@ enum TaskStatus: string
 
     case INCOMPLETE = 'incomplete';
 
-    public function values(): array
+    public static function values(): array
     {
         $statuses = [];
 
