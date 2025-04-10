@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Task\StoreRequest;
 use App\Models\Organization;
+use App\Models\Task;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -26,9 +27,9 @@ class TaskController extends Controller
                     'id' => $task->id,
                     'title' => $task->title,
                     'status' => $task->status,
-                    'started_at' => $task->started_at ? $task->started_at->format('Y-m-d H:i:s') : '-',
-                    'finished_at' => $task->finished_at ? $task->finished_at->format('Y-m-d H:i:s') : '-',
-                    'created_at' => $task->created_at->format('Y-m-d H:i:s'),
+                    'started_at' => $task->started_at ? $task->started_at->format('Y-m-d H:i') : '-',
+                    'finished_at' => $task->finished_at ? $task->finished_at->format('Y-m-d H:i') : '-',
+                    'created_at' => $task->created_at->format('Y-m-d H:i'),
                 ]),
         ]);
     }
@@ -45,21 +46,16 @@ class TaskController extends Controller
         return Redirect::route('tasks.index')->with('success', 'Task created.');
     }
 
-    public function edit(Organization $organization): Response
+    public function edit(Task $task): Response
     {
-        return Inertia::render('Organizations/Edit', [
-            'organization' => [
-                'id' => $organization->id,
-                'name' => $organization->name,
-                'email' => $organization->email,
-                'phone' => $organization->phone,
-                'address' => $organization->address,
-                'city' => $organization->city,
-                'region' => $organization->region,
-                'country' => $organization->country,
-                'postal_code' => $organization->postal_code,
-                'deleted_at' => $organization->deleted_at,
-                'contacts' => $organization->contacts()->orderByName()->get()->map->only('id', 'name', 'city', 'phone'),
+        return Inertia::render('Task/Edit', [
+            'task' => [
+                'id' => $task->id,
+                'title' => $task->title,
+                'description' => $task->description,
+                'status' => $task->status,
+                'started_at' => $task->started_at ? $task->started_at->format('Y-m-d H:i:s') : '-',
+                'finished_at' => $task->finished_at ? $task->finished_at->format('Y-m-d H:i:s') : '-',
             ],
         ]);
     }
