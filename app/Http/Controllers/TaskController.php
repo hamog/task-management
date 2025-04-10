@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Task\StoreRequest;
-use App\Models\Organization;
+use App\Http\Requests\TaskStoreRequest;
+use App\Http\Requests\TaskUpdateRequest;
 use App\Models\Task;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -27,8 +27,8 @@ class TaskController extends Controller
                     'id' => $task->id,
                     'title' => $task->title,
                     'status' => $task->status,
-                    'started_at' => $task->started_at ? $task->started_at->format('Y-m-d H:i') : '-',
-                    'finished_at' => $task->finished_at ? $task->finished_at->format('Y-m-d H:i') : '-',
+                    'started_at' => $task->started_at ? $task->started_at->format('Y-m-d') : '-',
+                    'finished_at' => $task->finished_at ? $task->finished_at->format('Y-m-d') : '-',
                     'created_at' => $task->created_at->format('Y-m-d H:i'),
                 ]),
         ]);
@@ -39,7 +39,7 @@ class TaskController extends Controller
         return Inertia::render('Task/Create');
     }
 
-    public function store(StoreRequest $request): RedirectResponse
+    public function store(TaskStoreRequest $request): RedirectResponse
     {
         Auth::user()->tasks()->create($request->validated());
 
@@ -48,47 +48,37 @@ class TaskController extends Controller
 
     public function edit(Task $task): Response
     {
+        if (Auth::user()->cannot('update', $task)) {
+            abort(403);
+        }
+
         return Inertia::render('Task/Edit', [
             'task' => [
                 'id' => $task->id,
                 'title' => $task->title,
                 'description' => $task->description,
                 'status' => $task->status,
-                'started_at' => $task->started_at ? $task->started_at->format('Y-m-d H:i:s') : '-',
-                'finished_at' => $task->finished_at ? $task->finished_at->format('Y-m-d H:i:s') : '-',
+                'started_at' => $task->started_at ? $task->started_at->format('Y-m-d') : null,
+                'finished_at' => $task->finished_at ? $task->finished_at->format('Y-m-d') : null,
             ],
         ]);
     }
 
-    public function update(Organization $organization): RedirectResponse
+    public function update(TaskUpdateRequest $request, Task $task): RedirectResponse
     {
-        $organization->update(
-            Request::validate([
-                'name' => ['required', 'max:100'],
-                'email' => ['nullable', 'max:50', 'email'],
-                'phone' => ['nullable', 'max:50'],
-                'address' => ['nullable', 'max:150'],
-                'city' => ['nullable', 'max:50'],
-                'region' => ['nullable', 'max:50'],
-                'country' => ['nullable', 'max:2'],
-                'postal_code' => ['nullable', 'max:25'],
-            ])
-        );
+        $task->update($request->validated());
 
-        return Redirect::back()->with('success', 'Organization updated.');
+        return Redirect::route('tasks.index')->with('success', 'Task updated.');
     }
 
-    public function destroy(Organization $organization): RedirectResponse
+    public function destroy(Task $task): RedirectResponse
     {
-        $organization->delete();
+        if (Auth::user()->cannot('delete', $task)) {
+            abort(403);
+        }
 
-        return Redirect::back()->with('success', 'Organization deleted.');
-    }
+        $task->delete();
 
-    public function restore(Organization $organization): RedirectResponse
-    {
-        $organization->restore();
-
-        return Redirect::back()->with('success', 'Organization restored.');
+        return Redirect::route('tasks.index')->with('success', 'Task deleted.');
     }
 }

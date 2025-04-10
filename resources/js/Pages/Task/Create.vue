@@ -2,7 +2,7 @@
   <div>
     <Head title="Create Organization" />
     <h1 class="mb-8 text-3xl font-bold">
-      <Link class="text-indigo-400 hover:text-indigo-600" href="/tasks">Tasks</Link>
+      <Link class="text-indigo-400 hover:text-indigo-600" href="/user/tasks">Tasks</Link>
       <span class="text-indigo-400 font-medium">/</span> Create
     </h1>
     <div class="max-w-3xl bg-white rounded-md shadow overflow-hidden">
@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     store() {
-      this.form.post('/tasks')
+      this.form.post('/user/tasks')
     },
   },
 }

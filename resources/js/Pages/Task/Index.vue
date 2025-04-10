@@ -4,7 +4,7 @@
     <h1 class="mb-8 text-3xl font-bold">tasks</h1>
     <div class="flex items-center justify-between mb-6">
       <search-filter v-model="form.search" class="mr-4 w-full max-w-md" @reset="reset" />
-      <Link class="btn-indigo" href="/tasks/create">
+      <Link class="btn-indigo" href="/user/tasks/create">
         <span>Create</span>
         <span class="hidden md:inline">&nbsp;task</span>
       </Link>
@@ -24,38 +24,38 @@
         <tbody>
           <tr v-for="task in tasks.data" :key="task.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
             <td class="border-t">
-              <Link class="flex items-center px-6 py-4" :href="`/tasks/${task.id}/edit`" tabindex="-1">
+              <Link class="flex items-center px-6 py-4" :href="`/user/tasks/${task.id}/edit`" tabindex="-1">
                 {{ task.id }}
               </Link>
             </td>
             <td class="border-t">
-              <Link class="flex items-center px-6 py-4 focus:text-indigo-500" :href="`/tasks/${task.id}/edit`">
+              <Link class="flex items-center px-6 py-4 focus:text-indigo-500" :href="`/user/tasks/${task.id}/edit`">
                 {{ task.title }}
                 <icon v-if="task.deleted_at" name="trash" class="shrink-0 ml-2 w-3 h-3 fill-gray-400" />
               </Link>
             </td>
             <td class="border-t">
-              <Link class="flex items-center px-6 py-4" :href="`/tasks/${task.id}/edit`" tabindex="-1">
+              <Link class="flex items-center px-6 py-4" :href="`/user/tasks/${task.id}/edit`" tabindex="-1">
                 <status :name="task.status"></status>
               </Link>
             </td>
             <td class="border-t">
-              <Link class="flex items-center px-6 py-4" :href="`/tasks/${task.id}/edit`" tabindex="-1">
+              <Link class="flex items-center px-6 py-4" :href="`/user/tasks/${task.id}/edit`" tabindex="-1">
                 {{ task.started_at }}
               </Link>
             </td>
             <td class="border-t">
-              <Link class="flex items-center px-6 py-4" :href="`/tasks/${task.id}/edit`" tabindex="-1">
+              <Link class="flex items-center px-6 py-4" :href="`/user/tasks/${task.id}/edit`" tabindex="-1">
                 {{ task.finished_at }}
               </Link>
             </td>
             <td class="border-t">
-              <Link class="flex items-center px-6 py-4" :href="`/tasks/${task.id}/edit`" tabindex="-1">
+              <Link class="flex items-center px-6 py-4" :href="`/user/tasks/${task.id}/edit`" tabindex="-1">
                 {{ task.created_at }}
               </Link>
             </td>
             <td class="w-px border-t">
-              <Link class="flex items-center px-4" :href="`/tasks/${task.id}/edit`" tabindex="-1">
+              <Link class="flex items-center px-4" :href="`/user/tasks/${task.id}/edit`" tabindex="-1">
                 <icon name="cheveron-right" class="block w-6 h-6 fill-gray-400" />
               </Link>
             </td>
@@ -107,7 +107,7 @@ export default {
     form: {
       deep: true,
       handler: throttle(function () {
-        this.$inertia.get('/tasks', pickBy(this.form), { preserveState: true })
+        this.$inertia.get('/user/tasks', pickBy(this.form), { preserveState: true })
       }, 150),
     },
   },

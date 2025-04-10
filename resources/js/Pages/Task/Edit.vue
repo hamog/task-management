@@ -3,7 +3,7 @@
     <Head :title="form.name" />
     <h1 class="mb-8 text-3xl font-bold">
       <Link class="text-indigo-400 hover:text-indigo-600" href="/tasks">Tasks</Link>
-      <span class="text-indigo-400 font-medium">/</span>
+      <span class="text-indigo-400 font-medium">/</span> Edit
       {{ form.name }}
     </h1>
     <div class="max-w-3xl bg-white rounded-md shadow overflow-hidden">
@@ -67,16 +67,11 @@ export default {
   },
   methods: {
     update() {
-      this.form.put(`/tasks/${this.task.id}`)
+      this.form.put(`/user/tasks/${this.task.id}`)
     },
     destroy() {
       if (confirm('Are you sure you want to delete this task?')) {
-        this.$inertia.delete(`/tasks/${this.task.id}`)
-      }
-    },
-    restore() {
-      if (confirm('Are you sure you want to restore this task?')) {
-        this.$inertia.put(`/tasks/${this.task.id}/restore`)
+        this.$inertia.delete(`/user/tasks/${this.task.id}`)
       }
     },
   },

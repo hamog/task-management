@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Requests\Task;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
-class StoreRequest extends FormRequest
+class TaskUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return Auth::user()->id === $this->route('task')->user_id;
     }
 
     /**
@@ -22,12 +22,10 @@ class StoreRequest extends FormRequest
      */
     public function rules(): array
     {
+        $rules = (new TaskStoreRequest)->rules();
+
         return [
-            'title' => 'required|string|max:255',
-            'description' => 'required|string|max:65535',
-            'status' => ['required', Rule::in(['pending', 'completed', 'incomplete'])],
-            'started_at' => 'nullable|date_format:Y-m-d',
-            'finished_at' => 'nullable|date_format:Y-m-d'
+            ...$rules
         ];
     }
 }
