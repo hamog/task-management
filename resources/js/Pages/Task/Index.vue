@@ -1,7 +1,7 @@
 <template>
   <div>
     <Head title="tasks" />
-    <h1 class="mb-8 text-3xl font-bold">tasks</h1>
+    <h1 class="mb-8 text-3xl font-bold">Tasks</h1>
     <div class="flex items-center justify-between mb-6">
       <search-filter v-model="form.search" class="mr-4 w-full max-w-md" @reset="reset" />
       <Link class="btn-indigo" href="/user/tasks/create">
