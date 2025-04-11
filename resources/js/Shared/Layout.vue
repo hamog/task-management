@@ -20,21 +20,20 @@
             </dropdown>
           </div>
           <div class="md:text-md flex items-center justify-between p-4 w-full text-sm bg-white border-b md:px-12 md:py-0">
-            <div class="mr-4 mt-1">{{ auth.user.name }}</div>
+            <div class="mr-4 mt-1">Task Management</div>
             <dropdown class="mt-1" placement="bottom-end">
               <template #default>
                 <div class="group flex items-center cursor-pointer select-none">
                   <div class="mr-1 text-gray-700 group-hover:text-indigo-600 focus:text-indigo-600 whitespace-nowrap">
                     <span>{{ auth.user.name }}</span>
-                    <span class="hidden md:inline">&nbsp;{{ auth.user.name }}</span>
+<!--                    <span class="hidden md:inline">&nbsp;{{ auth.user.name }}</span>-->
                   </div>
                   <icon class="w-5 h-5 fill-gray-700 group-hover:fill-indigo-600 focus:fill-indigo-600" name="cheveron-down" />
                 </div>
               </template>
               <template #dropdown>
                 <div class="mt-2 py-2 text-sm bg-white rounded shadow-xl">
-                  <Link class="block px-6 py-2 hover:text-white hover:bg-indigo-500" :href="`/users/${auth.user.id}/edit`">My Profile</Link>
-                  <Link class="block px-6 py-2 hover:text-white hover:bg-indigo-500" href="/users">Manage Users</Link>
+                  <Link class="block px-6 py-2 hover:text-white hover:bg-indigo-500">My Profile</Link>
                   <Link class="block px-6 py-2 w-full text-left hover:text-white hover:bg-indigo-500" href="/logout" method="delete" as="button">Logout</Link>
                 </div>
               </template>

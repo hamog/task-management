@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\TaskStatus;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -19,7 +20,7 @@ return new class extends Migration
             $table->text('description');
             $table->timestamp('started_at')->nullable();
             $table->timestamp('finished_at')->nullable();
-            $table->enum('status', ['pending', 'completed', 'incomplete'])->default('pending');
+            $table->enum('status', TaskStatus::values())->default(TaskStatus::PENDING->value);
             $table->timestamps();
         });
     }

@@ -7,6 +7,8 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ReportsController;
 use Illuminate\Support\Facades\Route;
 
+Route::redirect('/', '/login');
+
 // Auth
 Route::get('login', [AuthenticatedSessionController::class, 'create'])
     ->name('login')
@@ -17,13 +19,13 @@ Route::post('login', [AuthenticatedSessionController::class, 'store'])
     ->middleware('guest');
 
 Route::delete('logout', [AuthenticatedSessionController::class, 'destroy'])
-    ->name('logout');
+    ->name('logout')
+    ->middleware('auth');
 
 Route::middleware('auth')->prefix('user')->group(function () {
     // Dashboard
     Route::get('/', [DashboardController::class, 'index'])
-        ->name('dashboard')
-        ->middleware('auth');
+        ->name('dashboard');
     // Tasks
     Route::resource('tasks', TaskController::class);
 });

@@ -5,7 +5,7 @@
       <logo class="block mx-auto w-full max-w-xs fill-white" height="50" />
       <form class="mt-8 bg-white rounded-lg shadow-xl overflow-hidden" @submit.prevent="login">
         <div class="px-10 py-12">
-          <h1 class="text-center text-3xl font-bold">Welcome Back!</h1>
+          <h1 class="text-center text-3xl font-bold">Task Management</h1>
           <div class="mt-6 mx-auto w-24 border-b-2" />
           <text-input v-model="form.email" :error="form.errors.email" class="mt-10" label="Email" type="email" autofocus autocapitalize="off" />
           <text-input v-model="form.password" :error="form.errors.password" class="mt-6" label="Password" type="password" />

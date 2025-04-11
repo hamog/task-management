@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\TaskStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -25,7 +26,7 @@ class TaskStoreRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:65535',
-            'status' => ['required', Rule::in(['pending', 'completed', 'incomplete'])],
+            'status' => ['required', Rule::in(TaskStatus::values())],
             'started_at' => 'nullable|date_format:Y-m-d',
             'finished_at' => 'nullable|date_format:Y-m-d'
         ];
